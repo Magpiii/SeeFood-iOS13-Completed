@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         */
         
         //Allows the user to use photo library to insert an image:
-        imagePicker.sourceType = .photoLibrary
+        imagePicker.sourceType = .camera
         
         /*Determines whether or not the user can edit (i.e. crop) what's in the imageView (typically it's a better idea to set this to true so that the machine learning model can learn to use edited photos, but in the interest of time for this project it is set to false):
         */
@@ -41,8 +41,37 @@ class ViewController: UIViewController {
         //Initializes machine learning model:
         guard let model = try? VNCoreMLModel(for: Inceptionv3().model) else { fatalError("Error code 2: could not initialize CoreML model.") }
         
-        let request = VNCoreMLRequest(model: model) { (VNRequest, Error?) in
-            <#code#>
+        //Initializes a request in the machine learning model:
+        let request = VNCoreMLRequest(model: model) { (request, error) in
+            /*Initializes results as the results of the previously declared request and downcasts it as an array of VNClassificationObervation objects, which are observations made by the machine learning model:
+            */
+            guard let results = request.results as? [VNClassificationObservation] else { fatalError("Error code 3: could not convert ML Model request to type VNClassificationObservation.") }
+            
+            print(results)
+            
+            /*Checks for the highest "confidence score" of what the machine model model thinks the image is by setting a new constant equal to the first result in the array of results:
+            */
+            if let firstResult = results.first {
+                //If the image identifier contains the word "hotdog" or "hot dog..."
+                if ((firstResult.identifier.contains("hotdog")) || (firstResult.identifier.contains("hot dog"))) {
+                    //...changes the nav bar's title to "Hot dog!"
+                    self.navigationItem.title = "Hot dog!"
+                } else {
+                    //...changes the nav bar's title to "Not dog!"
+                    self.navigationItem.title = "Not dog!"
+                }
+            }
+        }
+        
+        /*Initializes the handler for searching for the user's taken or selected image which is passed into the function:
+        */
+        let handler = VNImageRequestHandler(ciImage: image)
+        
+        //Tells the handler to perform the request as an array of requests:
+        do {
+            try handler.perform([request])
+        } catch {
+            fatalError("Error: could not perform ML algorithm with specified request. Process failed with error: \(error)")
         }
     }
 
@@ -66,6 +95,10 @@ extension ViewController: UIImagePickerControllerDelegate {
             /*Sets the image selected or taken by the user to a "Core Image Image" which can be used by a machine learning model:
             */
             guard let smartImage = CIImage(image: userImage) else { fatalError("Error code 1: could not convert user inputted image to CIImage.") }
+            
+            /*Uses detect method (defined above) to pass the CIImage into the machine learning model:
+            */
+            detect(image: smartImage)
         }
         
         /*Dismisses the imagePicker and goes back to the main View once the user is done selecting or taking an image:
