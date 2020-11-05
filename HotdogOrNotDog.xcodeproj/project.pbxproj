@@ -103,8 +103,8 @@
 			children = (
 				5A4A9A182553329800654C7F /* AppDelegate.swift */,
 				5A4A9A1A2553329800654C7F /* SceneDelegate.swift */,
-				5A4A9A1C2553329800654C7F /* ViewController.swift */,
-				5A4A9A1E2553329800654C7F /* Main.storyboard */,
+				5A91C47D25547EBF00193169 /* Controller */,
+				5A91C47C25547EB500193169 /* View */,
 				5A4A9A212553329A00654C7F /* Assets.xcassets */,
 				5A4A9A232553329A00654C7F /* LaunchScreen.storyboard */,
 				5A4A9A262553329A00654C7F /* Info.plist */,
@@ -129,6 +129,23 @@
 				5A4A9A3C2553329B00654C7F /* Info.plist */,
 			);
 			path = HotdogOrNotDogUITests;
+			sourceTree = "<group>";
+		};
+		5A91C47C25547EB500193169 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5A4A9A1E2553329800654C7F /* Main.storyboard */,
+			);
+			name = View;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		5A91C47D25547EBF00193169 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5A4A9A1C2553329800654C7F /* ViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
